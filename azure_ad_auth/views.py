@@ -33,13 +33,15 @@ def complete(request):
     original_state = request.session.get('state')
     state = getattr(request, method).get('state')
     if original_state == state:
-        token = getattr(request, method).get('id_token')
+        code = getattr(request, method).get('code')
         nonce = request.session.get('nonce')
-        user = backend.authenticate(token=token, nonce=nonce)
-        request.session['token'] = token
-        if user is not None:
-            login(request, user)
+        if code is not None:
+            request.session['code'] = code
             return HttpResponseRedirect(get_login_success_url(request))
+        # user = backend.authenticate(token=token, nonce=nonce)
+        # if user is not None:
+        #     login(request, user)
+        #     return HttpResponseRedirect(get_login_success_url(request))
     return HttpResponseRedirect('failure')
 
 
@@ -47,7 +49,7 @@ def get_login_success_url(request):
     redirect_to = request.GET.get(REDIRECT_FIELD_NAME, '')
     netloc = urlparse.urlparse(redirect_to)[1]
     if not redirect_to:
-        redirect_to = settings.LOGIN_REDIRECT_URL
+        redirect_to = settings.AAD_REDIRECT_URL
     elif netloc and netloc != request.get_host():
-        redirect_to = settings.LOGIN_REDIRECT_URL
+        redirect_to = settings.AAD_REDIRECT_URL
     return redirect_to

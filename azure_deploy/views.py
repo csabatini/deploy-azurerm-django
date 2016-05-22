@@ -15,10 +15,10 @@ def logout_view(request):
     return HttpResponseRedirect(logout_url)
 
 def success(request):
-    return render(request, 'auth/login_success.html')
+    return render(request, 'registration/login_success.html')
 
 def subs(request):
     state = request.session['state']
     nonce = request.session['nonce']
-    token = request.session['token']
-    return render(request, 'subscriptions.html', {'state': state, 'nonce': nonce, 'token': token})
+    code = request.session['code']
+    return render(request, 'subscriptions.html', {'state': state, 'nonce': nonce, 'code': code})

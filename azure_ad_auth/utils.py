@@ -9,6 +9,7 @@ from urllib import urlencode
 
 
 AUTHORITY = getattr(settings, 'AAD_AUTHORITY', 'https://login.microsoftonline.com')
+RESOURCE = getattr(settings, 'AAD_RESOURCE', 'https://management.azure.com/')
 SCOPE = getattr(settings, 'AAD_SCOPE', 'openid')
 RESPONSE_TYPE = getattr(settings, 'AAD_RESPONSE_TYPE', 'id_token')
 RESPONSE_MODE = getattr(settings, 'AAD_RESPONSE_MODE', 'form_post')
@@ -17,13 +18,14 @@ CLIENT_ID = getattr(settings, 'AAD_CLIENT_ID')
 ALWAYS_AUTHENTICATE = getattr(settings, 'AAD_ALWAYS_AUTHENTICATE', True)
 
 
-def get_login_url(authority=AUTHORITY, response_type=RESPONSE_TYPE, response_mode=RESPONSE_MODE, scope=SCOPE, client_id=CLIENT_ID,
+def get_login_url(authority=AUTHORITY, response_type=RESPONSE_TYPE, response_mode=RESPONSE_MODE, resource=RESOURCE, scope=SCOPE, client_id=CLIENT_ID,
     redirect_uri=None, nonce=None, state=None, always_authenticate=ALWAYS_AUTHENTICATE):
     param_dict = {
         'response_type': response_type,
         'response_mode': response_mode,
         'scope': scope,
         'client_id': client_id,
+        'resource': resource,
     }
     if redirect_uri is not None:
         param_dict['redirect_uri'] = redirect_uri
