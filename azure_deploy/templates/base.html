@@ -21,11 +21,11 @@
                     </li>
                     {% if user.is_authenticated %}
                     <li>
-                        Logged in: {{ user.email }} (<a href="{% url 'logout' %}">Log out</a>)
+                        <a href="{% url 'logout' %}">Log out</a>
                     </li>
                     {% else %}
                     <li>
-                        <a href="{% url 'azure_login' %}">Login</a>
+                        <a href="{% url 'login' %}">Login</a>
                     </li>
                     {% endif %}
                 </ul>

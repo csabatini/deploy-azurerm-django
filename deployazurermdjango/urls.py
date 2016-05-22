@@ -6,7 +6,8 @@ urlpatterns = patterns('',
     url(r'^$', 'azure_deploy.views.index', name='home'),
 
     # authentication url
-    url(r'^login/$', 'azure_ad_auth.views.auth', name='azure_login'),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^login/complete/$', 'azure_ad_auth.views.complete', name='azure_complete'),
     # url(r'^login/complete/success/$',
     #     TemplateView.as_view(template_name='registration/login_success.html'),
@@ -15,7 +16,6 @@ urlpatterns = patterns('',
     url(r'^login/complete/failure/$',
         TemplateView.as_view(template_name='auth/login_failure.html'),
         name='failure'),
-    url(r'^logout/$', 'azure_deploy.views.logout_view', name='logout'),
 
     # azure urls
     url(r'^subscriptions/$', 'azure_deploy.views.subs', name='subs'),
