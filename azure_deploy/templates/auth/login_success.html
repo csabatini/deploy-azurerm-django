@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Successful Login - {{ block.super }}{% endblock %}
+{% block content %}
+<h1>Successful Azure AD Login</h1>
+<p>You have been authenticated as {{ user.email }}</p>
+{% endblock %}

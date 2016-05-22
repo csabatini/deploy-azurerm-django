@@ -1,0 +1,37 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+    <head>
+        <title>
+            {% block title %}
+                Azure Deployment Manager
+            {% endblock %}
+        </title>
+        <link rel="stylesheet"
+              href="{% static 'css/style.css' %}" />
+        {% block header %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            <h1>Azure Deployment Manager</h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="{% url 'home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li>
+                        Logged in: {{ user.email }} (<a href="{% url 'logout' %}">Log out</a>)
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'azure_login' %}">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        {% block content%}{% endblock %}
+        {% block footer%}{% endblock %}
+    </body>
+</html>
