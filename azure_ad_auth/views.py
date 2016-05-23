@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
+import requests
 import urlparse
 import uuid
 
@@ -29,6 +30,7 @@ def auth(request):
 @csrf_exempt
 def complete(request):
     backend = AzureActiveDirectoryBackend()
+    redirect_uri = request.build_absolute_uri(reverse(complete))
     method = 'GET' if backend.RESPONSE_MODE == 'fragment' else 'POST'
     original_state = request.session.get('state')
     state = getattr(request, method).get('state')
@@ -36,6 +38,13 @@ def complete(request):
         code = getattr(request, method).get('code')
         nonce = request.session.get('nonce')
         if code is not None:
+            data = backend.token_params(
+                redirect_uri=redirect_uri,
+                code=code,
+            )
+            url = data.pop('endpoint', None)
+            token_reponse = requests.post(url, data=data)
+            request.session['token'] = token_reponse.text
             request.session['code'] = code
             return HttpResponseRedirect(get_login_success_url(request))
         # user = backend.authenticate(token=token, nonce=nonce)

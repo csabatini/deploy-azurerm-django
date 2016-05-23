@@ -1,4 +1,4 @@
-from .utils import get_email_from_token, get_login_url, get_logout_url, RESPONSE_MODE
+from .utils import get_token_params, get_login_url, get_logout_url, RESPONSE_MODE
 from base64 import urlsafe_b64encode
 from django.conf import settings
 try:
@@ -29,6 +29,12 @@ class AzureActiveDirectoryBackend(object):
             state=state
         )
 
+    def token_params(self, redirect_uri, code):
+        return get_token_params(
+            redirect_uri=redirect_uri,
+            code=code,
+        )
+
     def logout_url(redirect_uri):
         return get_logout_url(redirect_uri=redirect_uri)
 
@@ -36,7 +42,7 @@ class AzureActiveDirectoryBackend(object):
         if token is None:
             return None
 
-        email = get_email_from_token(token=token, nonce=nonce)
+        # email = get_email_from_token(token=token, nonce=nonce)
 
         if email is None:
             return None

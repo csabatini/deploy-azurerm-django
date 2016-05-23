@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^login/$', 'azure_ad_auth.views.auth', name="azure_login"),
     url(r'^login/complete/success/$', 'azure_deploy.views.success', name="success"),
     url(r'^login/complete/failure/$',
-        TemplateView.as_view(template_name='auth/login_failure.html'),
+        TemplateView.as_view(template_name='registration/login_failure.html'),
         name='failure'),
 
     # azure urls

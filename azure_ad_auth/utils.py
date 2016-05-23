@@ -10,11 +10,13 @@ from urllib import urlencode
 
 AUTHORITY = getattr(settings, 'AAD_AUTHORITY', 'https://login.microsoftonline.com')
 RESOURCE = getattr(settings, 'AAD_RESOURCE', 'https://management.azure.com/')
+GRANT_TYPE = getattr(settings, 'AAD_GRANT_TYPE', 'authorization_code')
 SCOPE = getattr(settings, 'AAD_SCOPE', 'openid')
 RESPONSE_TYPE = getattr(settings, 'AAD_RESPONSE_TYPE', 'id_token')
 RESPONSE_MODE = getattr(settings, 'AAD_RESPONSE_MODE', 'form_post')
 TENANT_ID = getattr(settings, 'AAD_TENANT_ID')
 CLIENT_ID = getattr(settings, 'AAD_CLIENT_ID')
+CLIENT_SECRET = getattr(settings, 'AAD_CLIENT_SECRET')
 ALWAYS_AUTHENTICATE = getattr(settings, 'AAD_ALWAYS_AUTHENTICATE', True)
 
 
@@ -40,6 +42,21 @@ def get_login_url(authority=AUTHORITY, response_type=RESPONSE_TYPE, response_mod
         authority=authority,
         params=params,
     )
+
+def get_token_params(authority=AUTHORITY, grant_type=GRANT_TYPE, resource=RESOURCE, client_id=CLIENT_ID,  client_secret=CLIENT_SECRET,
+    redirect_uri=None, code=None):
+    params = {
+        'endpoint': authority + '/common/oauth2/token',
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'resource': resource,
+        'grant_type': grant_type,
+    }
+    if redirect_uri is not None:
+        params['redirect_uri'] = redirect_uri
+    if code is not None:
+        params['code'] = code
+    return params
 
 
 def get_logout_url(redirect_uri, authority=AUTHORITY):
