@@ -8,7 +8,7 @@ from django.views.decorators.cache import never_cache
 import requests
 import urlparse
 import uuid
-
+import json
 
 @never_cache
 def auth(request):
@@ -43,14 +43,17 @@ def complete(request):
                 code=code,
             )
             url = data.pop('endpoint', None)
-            token_reponse = requests.post(url, data=data)
-            request.session['token'] = token_reponse.text
+            token_response = requests.post(url, data=data)
+            payload = json.loads(token_response.text)
+            id_token = payload['id_token']
+            access_token = payload['access_token']
+            request.session['token'] = token_response.text
             request.session['code'] = code
-            return HttpResponseRedirect(get_login_success_url(request))
-        # user = backend.authenticate(token=token, nonce=nonce)
-        # if user is not None:
-        #     login(request, user)
-        #     return HttpResponseRedirect(get_login_success_url(request))
+            user = backend.authenticate(token=id_token, nonce=nonce)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(get_login_success_url(request))
+
     return HttpResponseRedirect('failure')
 
 

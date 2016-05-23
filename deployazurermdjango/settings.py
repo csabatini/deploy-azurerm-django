@@ -75,6 +75,7 @@ DATABASES = {
 # Authentication
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'azure_ad_auth.backends.AzureActiveDirectoryBackend',
 )
 
 AAD_TENANT_ID=''
