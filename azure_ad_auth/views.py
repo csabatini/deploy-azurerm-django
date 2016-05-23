@@ -46,8 +46,7 @@ def complete(request):
             token_response = requests.post(url, data=data)
             payload = json.loads(token_response.text)
             id_token = payload['id_token']
-            access_token = payload['access_token']
-            request.session['token'] = token_response.text
+            request.session['access_token'] = payload['access_token']
             request.session['code'] = code
             user = backend.authenticate(token=id_token, nonce=nonce)
             if user is not None:

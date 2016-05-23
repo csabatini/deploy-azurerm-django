@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Subscriptions - {{ block.super}}{% endblock %}
 {% block content %}
-    <h2>Sesion vars</h2>
-    <p>{{ state }}</p>
-    <p>{{ nonce }}</p>
-    <p>{{ code }}</p>
-    <p>{{ access_token }}</p>
+    <h2>Subscriptions for {{ user.email }}</h2>
+    <ul>
+    {% for v in value %}
+    <li>{{ v.displayName }} - {{ v.subscriptionId }}</li>
+    {% endfor %}
+    </ul>
 {% endblock %}
