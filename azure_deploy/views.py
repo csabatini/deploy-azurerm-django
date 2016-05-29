@@ -6,6 +6,9 @@ from azure_ad_auth.utils import get_logout_url
 from django.contrib.auth.decorators import login_required
 import requests, json
 
+from .models import JSONFile
+from .forms import JSONFileForm
+
 
 def index(request):
     return render(request, 'index.html')
@@ -27,3 +30,14 @@ def subs(request):
     r = requests.get(SUB_URL, headers=headers, params=params)
     data = json.loads(r.text)
     return render(request, 'subscriptions.html', data)
+
+@login_required
+def templates(request):
+    form = JSONFileForm()
+    if request.method == 'POST':
+        print 'this should handle the post'
+
+    files = JSONFile.objects.all()
+
+    return render(request, 'templates.html', {'files': files, 'form': form})
+

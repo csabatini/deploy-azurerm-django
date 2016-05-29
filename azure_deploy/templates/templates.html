@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Subscriptions - {{ block.super}}{% endblock %}
+{% block content %}
+    <h2>Templates</h2>
+    <h2>Upload</h2>
+        <form action="{% url 'templates' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>{{ form.non_field_errors }}</p>
+
+        <p>{{ form.file.label_tag }} {{form.file.help_text }}</p>
+        <p>{{ form.filetype }}</p>
+        <p>
+            {{ form.file.errors }}
+            {{ form.file }}
+        </p>
+
+        <input type="submit" value="Upload"><br>
+        </form>
+{% endblock %}

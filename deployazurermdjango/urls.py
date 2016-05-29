@@ -23,6 +23,7 @@ urlpatterns = patterns('',
 
     # azure urls
     url(r'^subscriptions/$', 'azure_deploy.views.subs', name='subs'),
+    url(r'^templates/$', 'azure_deploy.views.templates', name='templates'),
 
     url(r'^admin/', include(admin.site.urls)),
 )
